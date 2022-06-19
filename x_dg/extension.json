@@ -1,0 +1,54 @@
+{
+    "name": "x-depgraph",
+    "description": "extension to do dependency graph stuff",
+    "version": "0.1.0",
+    "command": {
+        "name": "depgraph",
+        "description": "do dependency graph stuff",
+        "options": [{
+            "name": "verbose",
+            "shorthand": "v",
+            "type": "bool",
+            "description": "verbose output",
+            "default": false
+        }],
+        "subcommands": [
+            {
+                "name": "test",
+                "description": "test a dependency graph",
+                "positionals": {
+                    "name": "paths-to-test",
+                    "cardinality": "one-or-more"
+                },
+                "options": [{
+                    "name": "detailed",
+                    "type": "bool",
+                    "description": "show fully detailed output",
+                    "default": false
+                },
+                {
+                    "name": "output",
+                    "shorthand": "o",
+                    "type": "string",
+                    "description": "output format. can be `json` or `text`. default is `text`",
+                    "default": "text"
+                }]
+            },
+            {
+                "name": "monitor",
+                "description": "monitor a dependency graph",
+                "positionals": {
+                    "name": "path-to-monitor",
+                    "cardinality": "one"
+                },
+                "options": [{
+                    "name": "output",
+                    "shorthand": "o",
+                    "type": "string",
+                    "description": "output format. can be `json` or `text`. default is `text`",
+                    "default": "text"
+                }]
+            }
+        ]
+    }
+}

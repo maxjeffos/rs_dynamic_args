@@ -1,0 +1,7 @@
+{
+    "debug": true,
+    "proxy_port": 12345,
+    "args": {
+        "lang": "en"
+    }
+}

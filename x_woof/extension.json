@@ -1,0 +1,16 @@
+{
+    "name": "x-woof",
+    "version": "0.1.0",
+    "description": "patch ascii art",
+    "command": {
+        "name": "woof",
+        "description": "output patch ascii art",
+        "options": [{
+            "name": "lang",
+            "shorthand": "l",
+            "type": "string",
+            "description": "the language you want to show",
+            "default": false
+        }]
+    }
+}
