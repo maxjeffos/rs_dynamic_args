@@ -59,7 +59,8 @@ pub struct CommandOption {
     pub the_type: String,
     pub description: String,
     pub default: Option<Value>,
-    // if they type is string, it would be nice to be able specify a list of possible values
+    pub required: bool,
+    // if the type is string, it would be nice to be able specify a list of possible values
 
     // pub allowed_values: Vec<String>, // only for string type. Ex [ "en", "de", "cz", "he" ]
 }

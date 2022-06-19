@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use clap;
+use clap::ArgMatches;
 use extension_lib::extension_metadata;
 use extension_lib::launch_codes_new;
 
@@ -31,16 +32,8 @@ pub fn make_launch_codes(
     // So we need to iterate over the .options of the extension_metadata::Command and, for each one,
     // use cmd_matches.value_of to get the value of the option from the user CLI input
     // let extension_metadata_command = &ext_meta.command;
-    let mut options = HashMap::new();
-    if let Some(ext_metadata_command_options) = &ext_meta.command.options {
-        for o in ext_metadata_command_options {
-            let name = o.name.to_string();
-            let value = cmd_matches
-                .value_of(&name)
-                .expect("there should be a value for the option");
-            options.insert(name.to_string(), value.to_string());
-        }
-    }
+
+    let options = get_options_from_subcommand(&ext_meta.command, cmd_matches);
 
     println!("options: {:?}", options);
 
@@ -74,6 +67,56 @@ pub fn make_launch_codes(
     // `EXTENSION_ROOT=/Users/jeff/repos/maxjeffos/rs_dynamic_args/x_woof cr -- woof --lang=fr`
 
     launch_codes
+}
+
+fn get_options_from_subcommand(
+    ext_meta_command: &extension_metadata::Command,
+    clap_command_matches: &ArgMatches,
+) -> HashMap<String, String> {
+    let mut options = HashMap::new();
+    if let Some(ext_metadata_command_options) = &ext_meta_command.options {
+        for o in ext_metadata_command_options {
+            let name = o.name.to_string();
+
+            let maybe_value = clap_command_matches.value_of(&name);
+            if let Some(value) = maybe_value {
+                options.insert(name.to_string(), value.to_string());
+            } else {
+                // use the default value which must (by convention) exist since we know that required is false in this case and we have a rule that says
+                // if required is false, there must be a default value
+                println!("adding default value for option: {:?}", &name);
+                let default_value = o
+                    .default
+                    .as_ref()
+                    .expect("if required is false, there must be a default value"); // TODO: enforce this with the type system
+
+                println!("default value: {:?}", default_value);
+                let default_value_string = default_value.to_string();
+                println!("default_value_string: {:?}", default_value_string);
+
+                // default_value is a serde_json::Value type - need to convert it to a String (for now , at least, and maybe ultimately into bool, etc)
+                if default_value.is_string() {
+                    println!("option default value is a string");
+                    let default_value_string = default_value
+                        .as_str()
+                        .expect("default value must be convertible to a string")
+                        .to_owned();
+                    println!("default_value_string: {:?}", default_value_string);
+                    options.insert(name.to_string(), default_value_string);
+                } else if default_value.is_boolean() {
+                    println!("option default value is a boolean");
+                    let v = default_value
+                        .as_bool()
+                        .expect("default value must be convertible to a boolean")
+                        .to_string();
+                    println!("v: {:?}", v);
+                    options.insert(name.to_string(), v);
+                }
+            }
+        }
+    }
+
+    options
 }
 
 // initially create a launch_codes_new::Command with the 0th subcommand (if the 0th subcommand dne, it's an error).
@@ -111,18 +154,7 @@ fn mutable_co_spelunk(
             next_extension_metadata_command.name
         );
 
-        // get the options for the subcommand
-        let mut options = HashMap::new();
-        if let Some(ext_metadata_command_options) = &next_extension_metadata_command.options {
-            for o in ext_metadata_command_options {
-                let name = o.name.to_string();
-                let value = x_cmd_matches
-                    .value_of(&name)
-                    .expect("there should be a value for the option");
-                options.insert(name.to_string(), value.to_string());
-            }
-        }
-
+        let options = get_options_from_subcommand(next_extension_metadata_command, x_cmd_matches);
         println!("  - options: {:?}", options);
 
         // create new the command

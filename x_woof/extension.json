@@ -10,7 +10,8 @@
             "shorthand": "l",
             "type": "string",
             "description": "the language you want to show",
-            "default": false
+            "required": false,
+            "default": "default-lang"
         }]
     }
 }

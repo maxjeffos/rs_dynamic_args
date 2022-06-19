@@ -43,7 +43,7 @@ fn clap_command_from_extension_metadata_command(cmd: &extension_metadata::Comman
                 .long(name)
                 .help(description)
                 .takes_value(true)
-                .required(true);
+                .required(opt.required);
 
             let arg = if let Some(shorthand) = maybe_shorthand {
                 arg.short(shorthand)

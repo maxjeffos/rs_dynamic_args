@@ -10,6 +10,7 @@
             "shorthand": "v",
             "type": "bool",
             "description": "verbose output",
+            "required": false,
             "default": false
         }],
         "subcommands": [
@@ -24,6 +25,7 @@
                     "name": "detailed",
                     "type": "bool",
                     "description": "show fully detailed output",
+                    "required": false,
                     "default": false
                 },
                 {
@@ -31,6 +33,7 @@
                     "shorthand": "o",
                     "type": "string",
                     "description": "output format. can be `json` or `text`. default is `text`",
+                    "required": false,
                     "default": "text"
                 }]
             },
@@ -46,6 +49,7 @@
                     "shorthand": "o",
                     "type": "string",
                     "description": "output format. can be `json` or `text`. default is `text`",
+                    "required": false,
                     "default": "text"
                 }]
             }
