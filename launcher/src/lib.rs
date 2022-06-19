@@ -1,8 +1,4 @@
-use anyhow;
 use extension_lib::extension_metadata::{self, ExtensionMetadata};
-use std::env;
-use std::path::{Path, PathBuf};
-// use clap::{App, Arg, Command, Subcommand};
 use clap;
 
 pub mod launch_codes;
@@ -10,25 +6,22 @@ pub mod launch_codes;
 pub fn make_arg_parser_config(ext_meta: &ExtensionMetadata) -> clap::App {
     let base_app = clap::Command::new("launcher")
         .about("cli arg parsing with ext passthrough")
-        .version("5.2.1")
+        .version("0.1.0")
         .subcommand_required(true)
         .arg_required_else_help(true)
         .author("maxjeffos");
     // .subcommand(Command::new("version").about("show version"));
 
     // add extension command
-
-    let x_command = clap_command_from_extension_metadata_command(&ext_meta.command);
-    let the_app = base_app.subcommand(x_command);
-
-    the_app
+    let ext_command = clap_command_from_extension_metadata_command(&ext_meta.command);
+    base_app.subcommand(ext_command)
 }
 
 fn clap_command_from_extension_metadata_command(cmd: &extension_metadata::Command) -> clap::App {
     let ext_command_description: &str = &cmd.description;
-    let extension_command_base = clap::Command::new(&cmd.name).about(ext_command_description);
+    let clap_command = clap::Command::new(&cmd.name).about(ext_command_description);
 
-    // add options to the extension command
+    // add options to the clap command
     let mut args = Vec::new();
     if let Some(options) = &cmd.options {
         for opt in options {
@@ -54,7 +47,7 @@ fn clap_command_from_extension_metadata_command(cmd: &extension_metadata::Comman
             args.push(arg);
         }
     }
-    let extension_command_base = extension_command_base.args(args);
+    let clap_command = clap_command.args(args);
 
     let mut clap_subcommands = Vec::new();
     if let Some(subcommands) = &cmd.subcommands {
@@ -63,8 +56,6 @@ fn clap_command_from_extension_metadata_command(cmd: &extension_metadata::Comman
             clap_subcommands.push(clap_subcommand);
         }
     }
-    println!("clap_subcommands.len(): {}", clap_subcommands.len());
-    let extension_command_base = extension_command_base.subcommands(clap_subcommands);
 
-    extension_command_base
+    clap_command.subcommands(clap_subcommands)
 }

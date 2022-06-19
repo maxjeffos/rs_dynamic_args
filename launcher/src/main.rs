@@ -1,13 +1,12 @@
 use anyhow;
 use extension_lib::extension_metadata;
 use std::env;
-use std::path::{Path, PathBuf};
-// use clap::{App, Arg, Command, Subcommand};
-use clap;
+use std::path::PathBuf;
+use serde_json;
 
 use launcher::launch_codes::make_launch_codes;
 
-const EXTENSION_NOT_FOUND_ERROR: i32 = 100; // weird error code so as not to conflict with errors from extensions
+const EXTENSION_NOT_FOUND_ERROR: i32 = 100; // error code that shouldn't conflict with errors from extensions
 
 fn get_extension_metadata_file_path() -> anyhow::Result<PathBuf> {
     let extension_root_env_var = std::env::var("EXTENSION_ROOT");
@@ -81,6 +80,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             // generate the launch codes from 1) the Clap config 2) the user input 3) the ExtensionMetadata
             let launch_codes = make_launch_codes(&matches, &extension_metadata);
             println!("\nlaunch codes: {:#?}", launch_codes);
+
+            let launch_codes_json_string = serde_json::to_string_pretty(&launch_codes)?;
+            println!(
+                "\nback in main, launch codes json\n{}:",
+                launch_codes_json_string
+            );
 
             // launch the extension with the launch codes
         }

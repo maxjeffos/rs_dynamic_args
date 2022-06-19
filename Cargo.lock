@@ -103,6 +103,7 @@ dependencies = [
  "anyhow",
  "clap",
  "extension_lib",
+ "serde_json",
 ]
 
 [[package]]
