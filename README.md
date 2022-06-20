@@ -1,3 +1,4 @@
 # rs_dynamic_args
 
-Experimenting with dynamic arg ser/deser in Rust.
+An experiment in dynamic argugment handling.
+

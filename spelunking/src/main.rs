@@ -1,5 +1,12 @@
 use serde_derive::{Deserialize, Serialize};
-use serde_json::{Error, Value, Number};
+use serde_json::{Error, Number, Value};
+
+use std::fs::File;
+use std::io::BufReader;
+use std::io::BufWriter;
+use std::io::Read;
+
+use extension_lib::extension_metadata::ExtensionMetadata;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 struct ExtArgs {
@@ -18,8 +25,10 @@ struct Option {
     pub default: Value,
 }
 
-
 fn main() {
+    spelunking::simple::spelunk_simple();
+    std::process::exit(0);
+
     // let json = serde_json::to_string_pretty(&x).unwrap();
     // println!("{}", json);
 
@@ -50,7 +59,6 @@ fn main() {
     let json = serde_json::to_string_pretty(&ext_args).unwrap();
     println!("{}", json);
 
-
     println!("");
     println!("");
     println!("");
@@ -75,9 +83,9 @@ fn main() {
 
     // dynamic deser
     // let maybe_obj = serde_json::from_str::<Value>(input_str);
-    
+
     let maybe_ext_args = serde_json::from_str::<ExtArgs>(input_str);
-    
+
     match maybe_ext_args {
         Ok(obj) => {
             println!("{:?}", obj);
@@ -96,7 +104,7 @@ fn main() {
                 } else {
                     panic!("unexpected default type");
                 }
-                
+
                 println!("");
             }
         }
@@ -105,7 +113,60 @@ fn main() {
         }
     }
 
-    
+    println!("");
+    println!("");
+    println!("doing from file");
+    // read file to string
+    // let mut file = File::open("tests/fixtures/ext-dg.json").unwrap();
+    // let mut contents = String::new();
+    // file.read_to_string(&mut contents).unwrap();
+
+    let ext_meta_file_path = "tests/fixtures/ext-dg.json";
+    // let file = File::open(ext_meta_file_path).unwrap();
+    // let mut buf_reader = BufReader::new(file);
+    // let mut file_contents_string = String::new();
+    // buf_reader
+    //     .read_to_string(&mut file_contents_string)
+    //     .unwrap();
+
+    let file_contents_string = std::fs::read_to_string(ext_meta_file_path).unwrap();
+
+    // let file_contents_string = r#"
+    // {
+    //     "name": "sclix-depgraph",
+    //     "description": "extension to do dependency graph stuff",
+    //     "version": "0.1.0",
+    //     "command": {
+    //         "name": "depgraph",
+    //         "description": "do dependency graph stuff",
+    //         "positionals": false,
+    //         "options": [{
+    //             "name": "verbose",
+    //             "shorthand": "v",
+    //             "type": "bool",
+    //             "description": "verbose output",
+    //             "default": false
+    //         }]
+    //     }
+    // }
+    // "#;
+
+    println!("{}", file_contents_string);
+
+    // dynamic deser
+    // let maybe_obj = serde_json::from_str::<Value>(input_str);
+    // println!("{:?}", maybe_obj);
+
+    let maybe_ext_args = serde_json::from_str::<ExtensionMetadata>(&file_contents_string);
+    match maybe_ext_args {
+        Ok(obj) => {
+            println!("deserialized ok");
+            println!("name: {}", obj.name);
+        }
+        Err(e) => {
+            println!("{:?}", e);
+        }
+    }
 }
 
 // #[cfg(test)]

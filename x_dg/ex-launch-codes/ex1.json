@@ -1,0 +1,19 @@
+{
+    "debug": true,
+    "proxy_port": 12345,
+    "args": {
+        "subcommand": {
+            "name": "test",
+            "args": [
+                {
+                    "name": "detailed",
+                    "value": true
+                },
+                {
+                    "name": "output",
+                    "value": "json"
+                }
+            ]
+        }
+    }
+}

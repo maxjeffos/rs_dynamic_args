@@ -1,0 +1,24 @@
+left off here try to make one that does not use a subcommand
+I guess this would be just like the x_woof one
+
+
+
+{
+    "debug": true,
+    "proxy_port": 12345,
+    "args": {
+        "subcommand": {
+            "name": "test",
+            "args": [
+                {
+                    "name": "detailed",
+                    "value": true
+                },
+                {
+                    "name": "output",
+                    "value": "json"
+                }
+            ]
+        }
+    }
+}
