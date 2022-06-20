@@ -1,14 +1,8 @@
-use std::path::{Path, PathBuf};
-
-use anyhow::Context;
-use serde::Deserialize;
 use serde_derive::{Deserialize, Serialize};
-use serde_json::{Error, Number, Value};
+use serde_json::Value;
 use std::fs::File;
 use std::io::BufReader;
-// use serde;
-use serde::de::DeserializeOwned;
-
+use std::path::Path;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct ExtensionMetadata {
@@ -79,15 +73,16 @@ pub struct CommandStringOption {
 }
 
 pub fn deser_extension_metadata(path: &Path) -> anyhow::Result<ExtensionMetadata> {
+    println!("deser_extension_metadata - path: {:?}", path);
     let file = File::open(path).unwrap();
     let reader = BufReader::new(file);
     let extension_metadata: ExtensionMetadata = serde_json::from_reader(reader)?;
     Ok(extension_metadata)
 }
 
-pub fn deser_extension_metadata_from_reader<R>(reader: R) -> anyhow::Result<ExtensionMetadata> 
+pub fn deser_extension_metadata_from_reader<R>(reader: R) -> anyhow::Result<ExtensionMetadata>
 where
-    R: std::io::Read
+    R: std::io::Read,
 {
     let extension_metadata: ExtensionMetadata = serde_json::from_reader(reader)?;
     Ok(extension_metadata)

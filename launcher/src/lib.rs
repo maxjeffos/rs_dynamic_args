@@ -1,5 +1,5 @@
-use extension_lib::extension_metadata::{self, ExtensionMetadata};
 use clap;
+use extension_lib::extension_metadata::{self, ExtensionMetadata};
 
 pub mod launch_codes;
 

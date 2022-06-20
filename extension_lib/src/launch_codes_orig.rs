@@ -9,7 +9,6 @@ use std::io::BufReader;
 // use serde;
 use serde::de::DeserializeOwned;
 
-
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct ExtensionInput<T> {
     pub debug: bool,
@@ -33,4 +32,3 @@ where
     let value = serde_json::from_str(input)?;
     Ok(value)
 }
-

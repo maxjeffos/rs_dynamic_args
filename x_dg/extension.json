@@ -1,5 +1,5 @@
 {
-    "name": "x-depgraph",
+    "name": "x_depgraph",
     "description": "extension to do dependency graph stuff",
     "version": "0.1.0",
     "command": {

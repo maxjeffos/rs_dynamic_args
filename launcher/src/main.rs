@@ -1,10 +1,11 @@
 use anyhow;
 use extension_lib::extension_metadata;
-use std::env;
-use std::path::PathBuf;
-use serde_json;
-
 use launcher::launch_codes::make_launch_codes;
+use serde_json;
+use std::env;
+use std::io::Write;
+use std::path::PathBuf;
+use std::process::{self, Stdio};
 
 const EXTENSION_NOT_FOUND_ERROR: i32 = 100; // error code that shouldn't conflict with errors from extensions
 
@@ -88,6 +89,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             );
 
             // launch the extension with the launch codes
+
+            // TODO: I figured this out in get_extension_metadata_file_path() so need to dedupe and dekludge this
+            let ext_root = extension_path.parent().unwrap();
+            println!("ext_root {:?}", ext_root);
+
+            let ext_bin_filename = format!("{}_darwin_arm64", &extension_metadata.name);
+            println!("ext_bin_filename {:?}", ext_bin_filename);
+            let ext_bin_path = ext_root.join(ext_bin_filename);
+            println!("ext_bin_path {:?}", ext_bin_path);
+            // let ext_path = std::fs::canonicalize(ext_path)?;
+            // println!("\nlaunching extension at {:?}", ext_path);
+
+            println!("\nlaunching extension at {:?}", ext_bin_path);
+
+            let mut ext_process = process::Command::new(ext_bin_path)
+                .stdout(Stdio::inherit())
+                .stderr(Stdio::inherit())
+                .stdin(Stdio::piped())
+                .env("EXTENSION_ROOT", ext_root)
+                .spawn()?;
+
+            let ext_process_stdin = ext_process.stdin.as_mut().unwrap();
+            ext_process_stdin.write(launch_codes_json_string.as_bytes())?;
+
+            let ext_process_result = ext_process.wait();
+            println!("\nback from extension in launcher");
+            println!("ext_process_result: {:#?}", ext_process_result);
         }
         Err(e) => {
             println!("{:?}", e);
@@ -95,8 +123,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             std::process::exit(EXTENSION_NOT_FOUND_ERROR);
         }
     }
-
-    // let raw_input = "cli depgraph test --json";
 
     Ok(())
 }
@@ -109,7 +135,7 @@ mod tests {
         use super::super::*;
 
         use std::fs;
-        use std::path::{Path, PathBuf};
+        use std::path::PathBuf;
 
         fn full_path_to_x_woof_extension_root() -> PathBuf {
             fs::canonicalize("../x_woof").unwrap()

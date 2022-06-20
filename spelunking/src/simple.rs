@@ -1,5 +1,5 @@
 use serde_derive::{Deserialize, Serialize};
-use serde_json::{Error, Value, Number};
+use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 struct ExtMeta {
@@ -15,7 +15,6 @@ struct CommandOption {
     pub the_type: CommandOptionType,
 
     // pub description: String,
-
     pub default: Value,
 
     // can I have deser logic that makes sure that this is only set if type is string?
@@ -37,9 +36,8 @@ enum CommandOptionType {
     StringArray,
 }
 
-// the simple thing that I have a solution for in Golang 
+// the simple thing that I have a solution for in Golang
 pub fn spelunk_simple() {
-
     let json_str = r#"{
         "name": "test",
 		"options": [

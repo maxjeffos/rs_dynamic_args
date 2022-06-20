@@ -1,5 +1,5 @@
 use serde_derive::{Deserialize, Serialize};
-use serde_json::{Error, Value, Number};
+use serde_json::{Error, Number, Value};
 
 use std::fs::File;
 use std::io::BufReader;
@@ -7,7 +7,6 @@ use std::io::BufWriter;
 use std::io::Read;
 
 use extension_lib::extension_metadata::ExtensionMetadata;
-
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 struct ExtArgs {
@@ -60,7 +59,6 @@ fn main() {
     let json = serde_json::to_string_pretty(&ext_args).unwrap();
     println!("{}", json);
 
-
     println!("");
     println!("");
     println!("");
@@ -85,9 +83,9 @@ fn main() {
 
     // dynamic deser
     // let maybe_obj = serde_json::from_str::<Value>(input_str);
-    
+
     let maybe_ext_args = serde_json::from_str::<ExtArgs>(input_str);
-    
+
     match maybe_ext_args {
         Ok(obj) => {
             println!("{:?}", obj);
@@ -106,7 +104,7 @@ fn main() {
                 } else {
                     panic!("unexpected default type");
                 }
-                
+
                 println!("");
             }
         }
@@ -131,7 +129,6 @@ fn main() {
     //     .read_to_string(&mut file_contents_string)
     //     .unwrap();
 
-
     let file_contents_string = std::fs::read_to_string(ext_meta_file_path).unwrap();
 
     // let file_contents_string = r#"
@@ -151,12 +148,11 @@ fn main() {
     //             "default": false
     //         }]
     //     }
-    // }    
+    // }
     // "#;
 
-
     println!("{}", file_contents_string);
-    
+
     // dynamic deser
     // let maybe_obj = serde_json::from_str::<Value>(input_str);
     // println!("{:?}", maybe_obj);
@@ -171,8 +167,6 @@ fn main() {
             println!("{:?}", e);
         }
     }
-
-    
 }
 
 // #[cfg(test)]
