@@ -2,6 +2,7 @@ use std::path::PathBuf;
 
 use anyhow::Context;
 
+pub mod extension;
 pub mod extension_metadata;
 pub mod launch_codes_new;
 pub mod launch_codes_orig;
@@ -36,13 +37,4 @@ pub fn read_input() -> Result<String, std::io::Error> {
     }
 
     Ok(input)
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
-    }
 }
