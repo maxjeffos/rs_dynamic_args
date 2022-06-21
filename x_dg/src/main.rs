@@ -1,7 +1,7 @@
 use extension_lib;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("\n[dg extension] - start");
+    println!("\n[dg extension] start");
     let extension_root = extension_lib::extension_root()?;
     println!("[dg extension] extension_root{:?}", extension_root);
 
