@@ -59,18 +59,11 @@ fn add_subcommands(
 
         // add the options for the subcommand
         // start by getting the appropriate subcommand from the extension_metadata_command
-        let next_extension_metadata_commands = extension_metadata_command.subcommands.as_ref().expect("if there is an ArgMatches subcommand here, there must be an extension metadata subcommand");
-        // TODO: consider if extension_metadata::Command.subcommands should be:
-        //  - a HashMap rather than a Vec
-        //  - not optional... probably no point it being explicitly optional if it's a Vec or HashMap (because it it's missing, it could probably just be initialized as an empty Vec/HashMap)... but probably depends on how Serde handles this sort of thing
-        let next_extension_metadata_command = next_extension_metadata_commands
-            .iter()
-            .find(|x| x.name == subcommand_name)
-            .expect("there should be a subcommand with the name of the ArgMatches subcommand");
-        println!(
-            "  - next_extension_metadata_command.name: {:?}",
-            next_extension_metadata_command.name
-        );
+
+        let next_extension_metadata_command = extension_metadata_command
+            .subcommands
+            .get(subcommand_name)
+            .expect("there should be a subcommand with the name of the ArgMatches subcommand"); // TODO: return error from this fn rather than panic
 
         let options =
             get_options_from_subcommand(next_extension_metadata_command, subcommand_matches);

@@ -2,5 +2,6 @@
 members = [
   "extension_lib",
   "x_woof",
+  "x_dg",
   "launcher",
 ]

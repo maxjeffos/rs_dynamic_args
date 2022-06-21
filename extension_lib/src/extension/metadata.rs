@@ -1,5 +1,6 @@
 use serde_derive::{Deserialize, Serialize};
 use serde_json::Value;
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
@@ -18,7 +19,9 @@ pub struct Command {
     pub description: String,
     pub positionals: Option<Positionals>,
     pub options: Option<Vec<CommandOption>>,
-    pub subcommands: Option<Vec<Command>>,
+
+    #[serde(default)]
+    pub subcommands: HashMap<String, Command>,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
