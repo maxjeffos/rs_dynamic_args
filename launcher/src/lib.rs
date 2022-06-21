@@ -1,5 +1,5 @@
 use clap;
-use extension_lib::extension_metadata::{self, ExtensionMetadata};
+use extension_lib::extension::metadata::{self, ExtensionMetadata};
 
 pub mod launch_codes;
 
@@ -17,7 +17,7 @@ pub fn make_arg_parser_config(ext_meta: &ExtensionMetadata) -> clap::App {
     base_app.subcommand(ext_command)
 }
 
-fn clap_command_from_extension_metadata_command(cmd: &extension_metadata::Command) -> clap::App {
+fn clap_command_from_extension_metadata_command(cmd: &metadata::Command) -> clap::App {
     let ext_command_description: &str = &cmd.description;
     let clap_command = clap::Command::new(&cmd.name).about(ext_command_description);
 
