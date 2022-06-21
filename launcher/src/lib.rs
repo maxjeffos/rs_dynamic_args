@@ -50,12 +50,10 @@ fn clap_command_from_extension_metadata_command(cmd: &metadata::Command) -> clap
     let clap_command = clap_command.args(args);
 
     let mut clap_subcommands = Vec::new();
-    if let Some(subcommands) = &cmd.subcommands {
-        for subcommand in subcommands {
-            let clap_subcommand = clap_command_from_extension_metadata_command(subcommand);
-            clap_subcommands.push(clap_subcommand);
-        }
-    }
+    cmd.subcommands.iter().for_each(|(_cmd_name, subcommand)| {
+        let clap_subcommand = clap_command_from_extension_metadata_command(subcommand);
+        clap_subcommands.push(clap_subcommand);
+    });
 
     clap_command.subcommands(clap_subcommands)
 }

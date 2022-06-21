@@ -13,8 +13,8 @@
             "required": false,
             "default": false
         }],
-        "subcommands": [
-            {
+        "subcommands": {
+            "test": {
                 "name": "test",
                 "description": "test a dependency graph",
                 "positionals": {
@@ -37,7 +37,7 @@
                     "default": "text"
                 }]
             },
-            {
+            "monitor": {
                 "name": "monitor",
                 "description": "monitor a dependency graph",
                 "positionals": {
@@ -53,6 +53,6 @@
                     "default": "text"
                 }]
             }
-        ]
+        }
     }
 }
