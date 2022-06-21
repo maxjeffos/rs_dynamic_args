@@ -3,5 +3,4 @@ members = [
   "extension_lib",
   "x_woof",
   "launcher",
-  "spelunking",
 ]
