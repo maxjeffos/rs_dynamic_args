@@ -2,14 +2,14 @@ use std::collections::HashMap;
 
 use clap;
 use clap::ArgMatches;
-use extension_lib::extension_metadata;
+use extension_lib::extension::metadata;
 use extension_lib::launch_codes_new;
 
 // Take in the app args from the user CLI input and the ExtensionMetadata and generate the launch codes
 pub fn make_launch_codes(
     // app_args: &[String],
     matches: &clap::ArgMatches,
-    ext_meta: &extension_metadata::ExtensionMetadata,
+    ext_meta: &metadata::ExtensionMetadata,
 ) -> launch_codes_new::ExtensionInput {
     println!("in make_launch_codes");
     println!("matches: {:#?}", matches);
@@ -47,7 +47,7 @@ pub fn make_launch_codes(
 fn add_subcommands(
     launch_codes_command: &mut launch_codes_new::Command,
     matches: &clap::ArgMatches,
-    extension_metadata_command: &extension_metadata::Command,
+    extension_metadata_command: &metadata::Command,
 ) {
     println!("in add_subcommands");
     println!("  - lanch_codes_command: {:?}", launch_codes_command);
@@ -94,7 +94,7 @@ fn add_subcommands(
 }
 
 fn get_options_from_subcommand(
-    ext_meta_command: &extension_metadata::Command,
+    ext_meta_command: &metadata::Command,
     clap_command_matches: &ArgMatches,
 ) -> HashMap<String, String> {
     let mut options = HashMap::new();

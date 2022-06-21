@@ -3,7 +3,6 @@ use std::path::PathBuf;
 use anyhow::Context;
 
 pub mod extension;
-pub mod extension_metadata;
 pub mod launch_codes_new;
 pub mod launch_codes_orig;
 

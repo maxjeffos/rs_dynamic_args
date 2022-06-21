@@ -1,5 +1,5 @@
 use anyhow;
-use extension_lib::extension_metadata;
+use extension_lib::extension::metadata;
 use launcher::launch_codes::make_launch_codes;
 use serde_json;
 use std::env;
@@ -68,7 +68,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     match extension_path {
         Ok(extension_path) => {
-            let extension_metadata = extension_metadata::deser_extension_metadata(&extension_path)?;
+            let extension_metadata = metadata::deser_extension_metadata(&extension_path)?;
 
             // generate the Clap / arg parsing thing dynamically based off the extension metadata
             // note: for full CLI, would need to do this based on other things, too: built-ins, all discovered extensions, and the top-level commands of the fallback CLI

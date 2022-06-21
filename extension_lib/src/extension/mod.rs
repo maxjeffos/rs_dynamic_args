@@ -1,13 +1,14 @@
-use crate::extension_metadata::{self, ExtensionMetadata};
 use anyhow;
 use std::fs;
 use std::path::{Path, PathBuf};
+
+pub mod metadata;
 
 #[derive(Debug, PartialEq)]
 pub struct Extension {
     root: PathBuf,
     bin_path: PathBuf,
-    pub metadata: ExtensionMetadata,
+    pub metadata: metadata::ExtensionMetadata,
 }
 
 /// Load an extension from the given directory
@@ -37,7 +38,7 @@ pub fn try_load(dir_path: &Path) -> anyhow::Result<Extension> {
         ));
     }
 
-    let metadata = extension_metadata::deser_extension_metadata(&extension_metadata_path)?;
+    let metadata = metadata::deser_extension_metadata(&extension_metadata_path)?;
 
     let bin_postfix = "_darwin_arm64";
     let bin_filename = format!("{}{}", metadata.name, bin_postfix);
