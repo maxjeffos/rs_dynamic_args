@@ -66,6 +66,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let extension_path = get_extension_metadata_file_path();
 
+    // idea. it would be nice to be able to avoid the double indentation that follows by doing something like
+    // let extension_path = extension_path.ok_or_else(|| log error and exit)?;
+    // this is the "get it out of the way" type pattern
+    // except the ok_or_else type thing would need to just swallow the error and exit.
+    // So to do this, I probably need to make this function return an exit code -  Result<i32, Box<dyn std::error::Error>>
+    // and then call it from a real main function that deals with the exit code
+    // that would make this code easier to read
+
     match extension_path {
         Ok(extension_path) => {
             let extension_metadata = metadata::deser_extension_metadata(&extension_path)?;
@@ -84,7 +92,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             let launch_codes_json_string = serde_json::to_string_pretty(&launch_codes)?;
             println!(
-                "\nback in main, launch codes json\n{}:",
+                "\nback in main, launch codes json\n{}",
                 launch_codes_json_string
             );
 

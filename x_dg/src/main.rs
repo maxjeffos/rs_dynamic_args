@@ -15,5 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("[dg extension] launch_codes:\n{:#?}", launch_codes);
     println!("[dg extension] done");
 
+    // extension goes here
+
     Ok(())
 }
